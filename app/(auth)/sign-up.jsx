@@ -7,6 +7,7 @@ import {images} from '../../constants'
 import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
 import { createUser } from '../../lib/appwrite'
+import { useGlobalContext } from '../../context/GlobalProvider'
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -14,6 +15,7 @@ const SignUp = () => {
     email: '',
     password: ''
   })
+  const {setUser, setisLoggedIn} = useGlobalContext()
   const [isSubmitting, setisSubmitting] = useState(false)
 
   const submit = async () => {
@@ -29,8 +31,9 @@ const SignUp = () => {
         form.password,
         form.username 
       )
-
-      //Set global state
+    
+      setUser(result)
+      setisLoggedIn(true)
       router.replace('/home')
     } catch(error) {
       Alert.alert("Error", error.message)
